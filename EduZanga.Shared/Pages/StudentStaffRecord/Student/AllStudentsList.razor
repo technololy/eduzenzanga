@@ -1,0 +1,116 @@
+@page "/all-students-list"
+@using MudBlazor
+@inject NavigationManager Navigation
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <!-- Header Section -->
+    <MudGrid Class="my-4">
+        <MudItem xs="12" md="8">
+            <MudText Typo="Typo.h5">All Students</MudText>
+        </MudItem>
+        <MudItem xs="12" md="4" Class="d-flex justify-end align-center">
+            <MudMenu Icon="@Icons.Material.Filled.MoreVert">
+                <MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Material.Filled.Add" OnClick="NavigateToAddStudent">Add New Student</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Material.Filled.Check" Color="Color.Success">Activate Student</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Material.Filled.Close" Color="Color.Error">DE-Activate Student</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Material.Filled.Edit" Color="Color.Primary">Allow Profile Edit</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Material.Filled.Block" Color="Color.Secondary">Disable Profile Edit</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Material.Filled.ArrowForward">Move Student</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Material.Filled.Print">Print Record</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Material.Filled.SaveAlt">Export To CSV</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Material.Filled.Delete" Color="Color.Error">Delete</MudMenuItem>
+                </MudMenuItem>
+            </MudMenu>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Search and Filters -->
+    <MudGrid Class="mb-3">
+        <MudItem xs="12" md="4">
+            <MudTextField T="string" Label="Search" Variant="Variant.Filled" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+        </MudItem>
+        <MudItem xs="12" md="2">
+            <MudSelect T="string" Label="Class" Variant="Variant.Filled">
+                <MudSelectItem Value="@("Basic 1")">Basic 1</MudSelectItem>
+                <MudSelectItem Value="@("Basic 2")">Basic 2</MudSelectItem>
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12" md="2">
+            <MudSelect T="string" Label="Arm" Variant="Variant.Filled">
+                <MudSelectItem Value="@("A")">A</MudSelectItem>
+                <MudSelectItem Value="@("B")">B</MudSelectItem>
+            </MudSelect>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Table -->
+    <MudTable Items="_students" Striped="true" Bordered="true" Hover="true">
+        <HeaderContent>
+            <MudTh>
+                <MudCheckBox T="bool" @bind-Checked="@_selectAllChecked" OnChange="OnSelectAllChange" />
+                Select All
+            </MudTh>
+            <MudTh>Student ID</MudTh>
+            <MudTh>Full Name</MudTh>
+            <MudTh>Gender</MudTh>
+            <MudTh>Class</MudTh>
+            <MudTh>Last Updated</MudTh>
+            <MudTh>Profile</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>
+                <MudCheckBox T="bool" @bind-Checked="@context.IsSelected" />
+            </MudTd>
+            <MudTd>@context.StudentId</MudTd>
+            <MudTd>@context.FullName</MudTd>
+            <MudTd>@context.Gender</MudTd>
+            <MudTd>@context.Class</MudTd>
+            <MudTd>@context.LastUpdated.ToString("dd MMM yyyy, h:mm tt")</MudTd>
+            <MudTd>
+                <MudLink Href="@($"/students/profile/{context.StudentId}")">View</MudLink>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+
+    <!-- Pagination -->
+    <MudGrid Class="my-3">
+        <MudItem xs="12" Class="d-flex justify-center">
+            <MudTablePager RowsPerPageString="Rows per page" />
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    private readonly List<StudentModel> _students =
+    [
+        new StudentModel { StudentId = "081505", FullName = "Hamisu Jake", Gender = "M", Class = "Basic 5", LastUpdated = DateTime.Now },
+        new StudentModel { StudentId = "081506", FullName = "Jane Doe", Gender = "F", Class = "Basic 5", LastUpdated = DateTime.Now }
+    ];
+
+    private bool _selectAllChecked;
+
+    private void OnSelectAllChange(bool isChecked)
+    {
+        _selectAllChecked = isChecked;
+        foreach (var student in _students)
+        {
+            student.IsSelected = isChecked;
+        }
+    }
+
+    private void NavigateToAddStudent()
+    {
+        Navigation.NavigateTo("/students/add");
+    }
+
+    public class StudentModel
+    {
+        public string StudentId { get; set; }
+        public string FullName { get; set; }
+        public string Gender { get; set; }
+        public string Class { get; set; }
+        public DateTime LastUpdated { get; set; }
+        public bool IsSelected { get; set; }
+    }
+}

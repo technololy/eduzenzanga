@@ -1,0 +1,41 @@
+@page "/class-settings/add"
+@page "/class-settings/edit/{id:int}"
+@using EduZanga.Model.Dto
+@using Microsoft.AspNetCore.Components.Rendering
+@inject NavigationManager Navigation
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="mt-5">
+    <MudText Typo="Typo.h5">@FormTitle</MudText>
+    <EditForm Model="@_currentClass" OnValidSubmit="SaveClass">
+        <MudTextField T="string" Label="Class Name" @bind-Value="_currentClass.ClassName" Required="true" />
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SaveClass">Save</MudButton>
+        <MudButton Variant="Variant.Text" OnClick="Cancel">Cancel</MudButton>
+    </EditForm>
+</MudContainer>
+
+@code {
+    [Parameter] public int? Id { get; set; }
+
+    private ClassItemDto _currentClass = new();
+    private string FormTitle => Id.HasValue ? "Edit Class" : "Add Class";
+
+    protected override void OnInitialized()
+    {
+        if (Id.HasValue)
+        {
+            // Load class for editing (Simulated data)
+            _currentClass = new ClassItemDto { Id = Id.Value, ClassName = $"Class {Id}" };
+        }
+    }
+
+    private void SaveClass()
+    {
+        // Save logic (e.g., update database or list)
+        Navigation.NavigateTo("/class-settings");
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/class-settings");
+    }
+}

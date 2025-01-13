@@ -1,0 +1,65 @@
+@page "/academic-settings"
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <!-- Header Section -->
+    <MudGrid Class="my-4">
+        <MudItem xs="12" md="4">
+            <MudText Typo="Typo.h5">Academic Settings</MudText>
+        </MudItem>
+  
+    </MudGrid>
+
+    <!-- Search and Filters -->
+    <MudGrid Class="mb-3">
+        <MudItem xs="12" md="6">
+            <MudTextField T="string" Label="Search" Variant="Variant.Filled" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudSelect T="string" Label="Current Session" Variant="Variant.Filled">
+                <MudSelectItem Value="@("2024/2025")">2024/2025</MudSelectItem>
+                <MudSelectItem Value="@("2023/2024")">2023/2024</MudSelectItem>
+            </MudSelect>
+        </MudItem>
+              <MudItem Class="d-flex justify-end" xs="12" md="3">
+              <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" OnClick="OpenAddSessionDialog">
+                Add New Session
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Table -->
+    <MudTable Items="_sessions" Striped="true" Bordered="true" Hover="true">
+        <HeaderContent>
+            <MudTh>
+                <MudCheckBox T="bool" @bind-Checked="@_selectAllChecked"/>
+                Select All
+            </MudTh>
+            <MudTh>Term</MudTh>
+            <MudTh>Session</MudTh>
+            <MudTh>Active</MudTh>
+            <MudTh>Result Published</MudTh>
+            <MudTh>Last Updated</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>
+                <MudCheckBox T="bool" @bind-Value="@context.IsSelected" />
+            </MudTd>
+            <MudTd>@context.Term</MudTd>
+            <MudTd>@context.Session</MudTd>
+            <MudTd>
+                <MudIcon Icon="@((context.IsActive) ? Icons.Material.Filled.Check : Icons.Material.Filled.Close)" Color="@((context.IsActive) ? Color.Success : Color.Error)" />
+            </MudTd>
+            <MudTd>
+                <MudIcon Icon="@((context.IsResultPublished) ? Icons.Material.Filled.Check : Icons.Material.Filled.Close)" Color="@((context.IsResultPublished) ? Color.Success : Color.Error)" />
+            </MudTd>
+            <MudTd>@context.LastUpdated.ToString()</MudTd>
+        </RowTemplate>
+    </MudTable>
+
+    <!-- Pagination -->
+    <MudGrid Class="my-3">
+        <MudItem xs="12">
+            <MudTablePager RowsPerPageString="Rows per page" />
+        </MudItem>
+    </MudGrid>
+</MudContainer>

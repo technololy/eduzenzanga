@@ -1,0 +1,107 @@
+@page "/staff-management"
+@using EduZanga.Model.Dto
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <!-- Header Section -->
+    <MudGrid Class="my-4">
+        <MudItem xs="12" md="8">
+            <MudText Typo="Typo.h5">Staff Management</MudText>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Search and Filters -->
+    <MudGrid Class="mb-3">
+        <MudItem xs="12" md="4">
+            <MudTextField T="string" Label="Search" Variant="Variant.Filled" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+        </MudItem>
+        <MudItem xs="12" md="8" Class="d-flex justify-end">
+            <MudChipSet T="object">
+                <MudChip OnClick="FilterAllStaff" Selected="true">All Staff</MudChip>
+                <MudChip OnClick="FilterAdmins">Admins</MudChip>
+                <MudChip OnClick="FilterAccountants">Accountants</MudChip>
+                <MudChip OnClick="FilterTeachers">Teachers</MudChip>
+            </MudChipSet>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Table -->
+    <MudTable Items="_filteredStaff" Striped="true" Bordered="true" Hover="true">
+        <HeaderContent>
+            <MudTh>
+                <MudCheckBox T="bool" @bind-Value="@_selectAllChecked" OnChange="OnSelectAllChange" />
+                Select All
+            </MudTh>
+            <MudTh>Staff ID</MudTh>
+            <MudTh>Full Name</MudTh>
+            <MudTh>Gender</MudTh>
+            <MudTh>Type</MudTh>
+            <MudTh>Last Updated</MudTh>
+            <MudTh>Profile</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>
+                <MudCheckBox T="bool" @bind-Value="@context.IsSelected" />
+            </MudTd>
+            <MudTd>@context.StaffId</MudTd>
+            <MudTd>@context.FullName</MudTd>
+            <MudTd>@context.Gender</MudTd>
+            <MudTd>@context.Type</MudTd>
+            <MudTd>@context.DateModified.ToString("dd MMM yyyy, h:mm tt")</MudTd>
+            <MudTd>
+                <MudLink Href="@($"/staff-management/profile/{context.StaffId}")">View</MudLink>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+
+    <!-- Pagination -->
+    <MudGrid Class="my-3">
+        <MudItem xs="12" Class="d-flex justify-center">
+            <MudTablePager RowsPerPageString="Rows per page" />
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    private readonly List<StaffModel> _staff =
+    [
+        new StaffModel { StaffId = "081505", FullName = "Hamisu Jake", Gender = "M", Type = "Accountant", DateModified = DateTime.Now },
+        new StaffModel { StaffId = "081506", FullName = "Jane Doe", Gender = "F", Type = "Admin", DateModified = DateTime.Now },
+        new StaffModel { StaffId = "081507", FullName = "John Smith", Gender = "M", Type = "Teacher", DateModified = DateTime.Now }
+    ];
+
+    private List<StaffModel>? _filteredStaff;
+    private bool _selectAllChecked;
+
+    protected override void OnInitialized()
+    {
+        _filteredStaff = _staff;
+    }
+
+    private void OnSelectAllChange(bool isChecked)
+    {
+        foreach (var member in _filteredStaff)
+        {
+            member.IsSelected = isChecked;
+        }
+    }
+
+    private void FilterAllStaff()
+    {
+        _filteredStaff = _staff;
+    }
+
+    private void FilterAdmins()
+    {
+        _filteredStaff = _staff.Where(s => s.Type == "Admin").ToList();
+    }
+
+    private void FilterAccountants()
+    {
+        _filteredStaff = _staff.Where(s => s.Type == "Accountant").ToList();
+    }
+
+    private void FilterTeachers()
+    {
+        _filteredStaff = _staff.Where(s => s.Type == "Teacher").ToList();
+    }
+}

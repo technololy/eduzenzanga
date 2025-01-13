@@ -1,0 +1,75 @@
+@page "/class-teachers-list"
+@using EduZanga.Model.Dto
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <!-- Header Section -->
+    <MudGrid Class="my-4">
+        <MudItem xs="12" md="8">
+            <MudText Typo="Typo.h5">Class Teachers</MudText>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Search and Buttons -->
+    <MudGrid Class="mb-3">
+        <MudItem xs="12" md="6">
+            <MudTextField T="string" Label="Search" Variant="Variant.Filled" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+        </MudItem>
+        <MudItem xs="12" md="6" Class="d-flex justify-end">
+            <MudButton Variant="Variant.Outlined" Color="Color.Info" StartIcon="@Icons.Material.Filled.Groups">
+                Students Attendance
+            </MudButton>
+            <MudButton OnClick="GoToAddNewFormTeacher" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" Class="ms-3">
+                Add New
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Table -->
+    <MudTable Items="_teachers" Striped="true" Bordered="true" Hover="true">
+        <HeaderContent>
+            <MudTh>Staff Name</MudTh>
+            <MudTh>Staff ID</MudTh>
+            <MudTh>Class</MudTh>
+            <MudTh>Arm</MudTh>
+            <MudTh>Action</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.StaffName</MudTd>
+            <MudTd>@context.StaffId</MudTd>
+            <MudTd>@context.Class</MudTd>
+            <MudTd>@context.Arm</MudTd>
+            <MudTd>
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => DeleteTeacher(context)" />
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+
+    <!-- Pagination -->
+    <MudGrid Class="my-3">
+        <MudItem xs="12" Class="d-flex justify-center">
+            <MudTablePager RowsPerPageString="Rows per page" />
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    private readonly List<TeacherDto> _teachers =
+    [
+        new TeacherDto { StaffName = "Abas Benji", StaffId = "302224", Class = "Primary Two (2)", Arm = "B" },
+        new TeacherDto { StaffName = "Abas Benji", StaffId = "302225", Class = "Primary Two (2)", Arm = "B" },
+        new TeacherDto { StaffName = "Abas Benji", StaffId = "302226", Class = "Primary Two (2)", Arm = "B" },
+        new TeacherDto { StaffName = "Abas Benji", StaffId = "302227", Class = "Primary Two (2)", Arm = "B" },
+        new TeacherDto { StaffName = "Abas Benji", StaffId = "302228", Class = "Primary Two (2)", Arm = "B" }
+    ];
+
+    private void DeleteTeacher(TeacherDto teacher)
+    {
+        _teachers.Remove(teacher);
+    }
+
+    private void GoToAddNewFormTeacher()
+    {
+        throw new NotImplementedException();
+    }
+
+}

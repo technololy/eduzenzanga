@@ -1,0 +1,101 @@
+@page "/staff-management/profile/{StaffId}"
+@using MudBlazor
+@using System.ComponentModel.DataAnnotations
+@inject NavigationManager Navigation
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4">
+    <!-- Header Section -->
+    <MudGrid Class="mb-3">
+        <MudItem xs="12">
+            <MudText Typo="Typo.h5">Staff Profile</MudText>
+        </MudItem>
+        <MudItem xs="12">
+            <MudText Typo="Typo.subtitle2" Class="text-muted">Details of the staff member</MudText>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Profile Details -->
+    <MudPaper Class="pa-4">
+        <MudGrid>
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h6">Full Name</MudText>
+                <MudText Typo="Typo.body1">@Staff.FullName</MudText>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h6">Staff ID</MudText>
+                <MudText Typo="Typo.body1">@Staff.StaffId</MudText>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h6">Gender</MudText>
+                <MudText Typo="Typo.body1">@Staff.Gender</MudText>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h6">Type</MudText>
+                <MudText Typo="Typo.body1">@Staff.Type</MudText>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h6">Last Updated</MudText>
+                <MudText Typo="Typo.body1">@Staff.LastUpdated.ToString("dd MMM yyyy, h:mm tt")</MudText>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+    <!-- Action Buttons -->
+    <MudGrid Class="mt-3">
+        <MudItem xs="12" Class="d-flex justify-start">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" OnClick="EditStaff">
+                Edit Profile
+            </MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Secondary" StartIcon="@Icons.Material.Filled.ArrowBack" Class="ms-3" OnClick="GoBack">
+                Back to List
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    [Parameter] public string StaffId { get; set; }
+
+    private StaffProfileModel Staff = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulated API call to fetch staff details
+        await Task.Delay(500); // Simulate loading time
+        Staff = new StaffProfileModel
+        {
+            StaffId = StaffId,
+            FullName = "Hamisu Jake",
+            Gender = "M",
+            Type = "Accountant",
+            LastUpdated = DateTime.Now
+        };
+    }
+
+    private void EditStaff()
+    {
+        Navigation.NavigateTo($"/staff-management/edit/{Staff.StaffId}");
+    }
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/staff-management");
+    }
+
+    public class StaffProfileModel
+    {
+        [Required]
+        public string StaffId { get; set; }
+
+        [Required]
+        public string FullName { get; set; }
+
+        [Required]
+        public string Gender { get; set; }
+
+        [Required]
+        public string Type { get; set; }
+
+        public DateTime LastUpdated { get; set; }
+    }
+}

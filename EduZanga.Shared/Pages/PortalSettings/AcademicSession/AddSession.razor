@@ -1,0 +1,40 @@
+@page "/add-session"
+@using EduZanga.Model.Dto
+
+<EditForm Model="@SessionModel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <MudGrid>
+        <MudItem xs="12">
+            <MudTextField T="string" Label="Term" For="@(() => SessionModel.Term)" Required="true" />
+        </MudItem>
+        <MudItem xs="12">
+            <MudTextField T="string" Label="Session" For="@(() => SessionModel.Session)" Required="true" />
+        </MudItem>
+        <MudItem xs="12">
+            <MudSwitch T="bool" Label="Active" @bind-Value="SessionModel.IsActive" />
+        </MudItem>
+        <MudItem xs="12">
+            <MudSwitch T="bool" Label="Result Published" @bind-Value="SessionModel.IsResultPublished" />
+        </MudItem>
+        <MudItem xs="12">
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Save</MudButton>
+            <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="Cancel">Cancel</MudButton>
+        </MudItem>
+    </MudGrid>
+</EditForm>
+
+@code {
+    [Parameter] public EventCallback OnCancel { get; set; }
+    [Parameter] public EventCallback<SessionModelDto?> OnSubmit { get; set; }
+    [Parameter] public SessionModelDto? SessionModel { get; set; }
+
+    private void Cancel()
+    {
+        OnCancel.InvokeAsync();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await OnSubmit.InvokeAsync(SessionModel);
+    }
+}

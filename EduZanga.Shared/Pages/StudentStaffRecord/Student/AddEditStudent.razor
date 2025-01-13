@@ -1,0 +1,65 @@
+@page "/students/add"
+@page "/students/edit/{StudentId}"
+@using EduZanga.Model.Dto
+@inject NavigationManager Navigation
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="mt-4">
+    <MudText Typo="Typo.h5">@FormTitle</MudText>
+    <EditForm Model="@StudentModel" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <MudGrid>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Full Name" Variant="Variant.Filled" @bind-Value="StudentModel.FullName" For="@(() => StudentModel.FullName)" />
+            </MudItem>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Student ID" Variant="Variant.Filled" @bind-Value="StudentModel.StudentId" For="@(() => StudentModel.StudentId)" />
+            </MudItem>
+            <MudItem xs="12">
+                <MudSelect T="string" Label="Gender" Variant="Variant.Filled" @bind-Value="StudentModel.Gender">
+                    <MudSelectItem Value="@("M")">Male</MudSelectItem>
+                    <MudSelectItem Value="@("F")">Female</MudSelectItem>
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Class" Variant="Variant.Filled" @bind-Value="StudentModel.Class" For="@(() => StudentModel.Class)" />
+            </MudItem>
+            <MudItem xs="12" Class="d-flex justify-end mt-3">
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Save</MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="Cancel">Cancel</MudButton>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+</MudContainer>
+
+@code {
+    [Parameter] public string? StudentId { get; set; }
+
+    private StudentDto StudentModel = new();
+    private string FormTitle => StudentId == null ? "Add Student" : "Edit Student";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (StudentId != null)
+        {
+            // Simulate fetching data from API
+            StudentModel = new StudentDto
+            {
+                StudentId = StudentId,
+                FullName = "Hamisu Jake",
+                Gender = "M",
+                Class = "Basic 5",
+            };
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        // Call API to save or update the student
+        Navigation.NavigateTo("/all-students");
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/all-students");
+    }
+}

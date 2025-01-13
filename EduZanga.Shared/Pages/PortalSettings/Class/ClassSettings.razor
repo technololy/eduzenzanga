@@ -1,0 +1,101 @@
+@page "/class-settings"
+@using EduZanga.Model.Dto
+@inject NavigationManager Navigation
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <!-- Header Section -->
+    <MudGrid Class="my-4">
+        <MudItem xs="12" md="8">
+            <MudText Typo="Typo.h5">Class Settings</MudText>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Dropdown Settings -->
+    <MudGrid Class="mb-3">
+        <MudItem xs="6" md="4">
+            <MudSelect T="string" Label="Class Settings" Variant="Variant.Filled">
+                <MudSelectItem Value="@("Burger")">Burger</MudSelectItem>
+                <MudSelectItem Value="@("Hotdog")">Hot Dog</MudSelectItem>
+            </MudSelect>
+        </MudItem>
+        <MudItem md="4" ></MudItem>
+        <MudItem xs="6" md="4" Class="d-flex justify-end" >
+             <MudButton Size="Size.Large" Class="ms-3" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" OnClick="NavigateToAddClass">
+                Add Class
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Table -->
+    <MudTable Items="_classes" Striped="true" Bordered="true" Hover="true">
+        <HeaderContent>
+            <MudTh>
+                Select All
+            </MudTh>
+            <MudTh>Classes</MudTh>
+            <MudTh>Actions</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>
+                <MudCheckBox T="bool"></MudCheckBox>
+            </MudTd>
+            <MudTd>@context.ClassName</MudTd>
+            <MudTd>
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" OnClick="() => NavigateToEditClass(context.Id)" />
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => DeleteClass(context.Id)" />
+            </MudTd>
+        </RowTemplate>
+        <FooterContent>
+            <MudTd>
+                Total: <b>@_classes.Count</b>
+            </MudTd>
+        </FooterContent>
+    </MudTable>
+
+    <!-- Pagination -->
+    <MudGrid Class="my-3">
+        <MudItem xs="12">
+            <MudTablePager RowsPerPageString="Rows per page" />
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    private bool _selectAllChecked;
+    private readonly List<ClassItemDto> _classes =
+    [
+        new ClassItemDto { Id = 1, ClassName = "SS 2", IsSelected = false },
+        new ClassItemDto { Id = 2, ClassName = "Primary 3", IsSelected = false },
+        new ClassItemDto { Id = 3, ClassName = "Primary 4", IsSelected = false },
+        new ClassItemDto { Id = 4, ClassName = "Basic 1", IsSelected = false },
+        new ClassItemDto { Id = 5, ClassName = "Grade 2", IsSelected = false }
+    ];
+
+    private void OnSelectAllChange(bool isChecked)
+    {
+        _selectAllChecked = isChecked;
+        foreach (var classItem in _classes)
+        {
+            classItem.IsSelected = isChecked;
+        }
+    }
+
+    private void NavigateToAddClass()
+    {
+        Navigation.NavigateTo("/class-settings/add");
+    }
+
+    private void NavigateToEditClass(long id)
+    {
+        Navigation.NavigateTo($"/class-settings/edit/{id}");
+    }
+
+    private void DeleteClass(long id)
+    {
+        var classToRemove = _classes.FirstOrDefault(c => c.Id == id);
+        if (classToRemove != null)
+        {
+            _classes.Remove(classToRemove);
+        }
+    }
+}

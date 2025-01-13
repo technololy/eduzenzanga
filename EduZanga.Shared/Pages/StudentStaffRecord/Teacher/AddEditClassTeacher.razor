@@ -1,0 +1,104 @@
+@page "/add-edit-class-teacher"
+@using System.ComponentModel.DataAnnotations
+@using System.Net.Http.Json
+@using EduZanga.Model.Dto
+
+<EditForm Model="@TeacherModel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <MudGrid>
+        <MudItem xs="12">
+            <MudTextField T="string" Label="Staff Name" Variant="Variant.Filled"
+                          @bind-Value="TeacherModel.StaffName" For="@(() => TeacherModel.StaffName)" />
+        </MudItem>
+        <MudItem xs="12">
+            <MudTextField T="string" Label="Staff ID" Variant="Variant.Filled"
+                          @bind-Value="TeacherModel.StaffId" For="@(() => TeacherModel.StaffId)" />
+        </MudItem>
+        <MudItem xs="12">
+            <MudTextField T="string" Label="Class" Variant="Variant.Filled"
+                          @bind-Value="TeacherModel.Class" For="@(() => TeacherModel.Class)" />
+        </MudItem>
+        <MudItem xs="12">
+            <MudTextField T="string" Label="Arm" Variant="Variant.Filled"
+                          @bind-Value="TeacherModel.Arm" For="@(() => TeacherModel.Arm)" />
+        </MudItem>
+        <MudItem xs="12" Class="d-flex justify-end mt-3">
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Disabled="@_isSubmitting">
+                @if (_isSubmitting)
+                {
+                    <MudProgressCircular Indeterminate="true" Size="Size.Large" Class="me-2" />
+                }
+                Save
+            </MudButton>
+            <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="Cancel">Cancel</MudButton>
+        </MudItem>
+    </MudGrid>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <MudAlert Severity="Severity.Error" Style="margin-top:10px;">
+        @_errorMessage
+    </MudAlert>
+}
+
+
+@code {
+    [Parameter] public TeacherDto TeacherModel { get; set; } = new();
+    [Parameter] public EventCallback OnCancel { get; set; }
+    [Parameter] public EventCallback<TeacherDto> OnSubmit { get; set; }
+
+    [Inject] private HttpClient? Http { get; set; }
+
+    private bool _isSubmitting = false;
+    private string? _errorMessage;
+
+    private async Task HandleValidSubmit()
+    {
+        _isSubmitting = true;
+        _errorMessage = null;
+
+        try
+        {
+            if (TeacherModel.Id > 0)
+            {
+                // Update existing teacher
+                var response = await Http.PutAsJsonAsync($"api/teachers/{TeacherModel.Id}", TeacherModel);
+                if (response.IsSuccessStatusCode)
+                {
+                    await OnSubmit.InvokeAsync(TeacherModel);
+                }
+                else
+                {
+                    _errorMessage = "Failed to update teacher. Please try again.";
+                }
+            }
+            else
+            {
+                // Add new teacher
+                var response = await Http.PostAsJsonAsync("api/teachers", TeacherModel);
+                if (response.IsSuccessStatusCode)
+                {
+                    await OnSubmit.InvokeAsync(TeacherModel);
+                }
+                else
+                {
+                    _errorMessage = "Failed to add teacher. Please try again.";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"An error occurred: {ex.Message}";
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+
+    private async Task Cancel()
+    {
+        await OnCancel.InvokeAsync();
+    }
+}
