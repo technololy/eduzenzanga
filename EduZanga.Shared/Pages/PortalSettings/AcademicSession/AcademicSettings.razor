@@ -12,16 +12,16 @@
     <!-- Search and Filters -->
     <MudGrid Class="mb-3">
         <MudItem xs="12" md="6">
-            <MudTextField T="string" Label="Search" Variant="Variant.Filled" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+            <MudTextField T="string" Label="Search"   Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
         </MudItem>
         <MudItem xs="12" md="3">
-            <MudSelect T="string" Label="Current Session" Variant="Variant.Filled">
+            <MudSelect T="string" Label="Current Session"  >
                 <MudSelectItem Value="@("2024/2025")">2024/2025</MudSelectItem>
                 <MudSelectItem Value="@("2023/2024")">2023/2024</MudSelectItem>
             </MudSelect>
         </MudItem>
               <MudItem Class="d-flex justify-end" xs="12" md="3">
-              <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" OnClick="OpenAddSessionDialog">
+              <MudButton   Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" OnClick="OpenAddSessionDialog">
                 Add New Session
             </MudButton>
         </MudItem>

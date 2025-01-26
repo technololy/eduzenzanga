@@ -1,0 +1,76 @@
+@page "/my-classroom/create"
+@using System.ComponentModel.DataAnnotations
+@using EduZanga.Model
+@inject NavigationManager Navigation
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="mt-4">
+    <!-- Header Section -->
+    <MudGrid Class="mb-3">
+        <MudItem xs="12">
+            <MudText Typo="Typo.h5">Create New Class</MudText>
+        </MudItem>
+        <MudItem xs="12">
+            <MudText Typo="Typo.subtitle2" Class="text-muted">Fill out the form below to create a new class.</MudText>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Form -->
+    <EditForm Model="@ClassModel" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <MudGrid>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Class Name" @bind-Value="ClassModel.ClassName" For="@(() => ClassModel.ClassName)" />
+            </MudItem>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Subject" @bind-Value="ClassModel.Subject" For="@(() => ClassModel.Subject)" />
+            </MudItem>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Class Code" @bind-Value="ClassModel.ClassCode" For="@(() => ClassModel.ClassCode)" />
+            </MudItem>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Session" @bind-Value="ClassModel.Session" For="@(() => ClassModel.Session)" />
+            </MudItem>
+            <MudItem xs="12">
+                <MudDatePicker Label="Start Date" @bind-Date="ClassModel.Date" />
+            </MudItem>
+            <MudItem xs="12" Class="d-flex justify-end mt-3">
+                <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary">Create Class</MudButton>
+                <MudButton Color="Color.Secondary" Class="ms-3" OnClick="Cancel">Cancel</MudButton>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+
+    <!-- Validation Summary -->
+    <MudPaper Class="pa-3 mt-3">
+        <MudText Typo="Typo.subtitle2" Color="Color.Error">
+            <ValidationSummary />
+        </MudText>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private NewClassModel ClassModel = new();
+
+    private async Task HandleValidSubmit()
+    {
+        // Simulate API call
+        await Task.Delay(500);
+
+        // Logic to save the new class
+        Console.WriteLine("Class Created:");
+        Console.WriteLine($"Class Name: {ClassModel.ClassName}");
+        Console.WriteLine($"Subject: {ClassModel.Subject}");
+        Console.WriteLine($"Class Code: {ClassModel.ClassCode}");
+        Console.WriteLine($"Session: {ClassModel.Session}");
+        Console.WriteLine($"Date: {ClassModel.Date}");
+
+        // Redirect back to the classroom list
+        Navigation.NavigateTo("/my-classroom");
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/my-classroom");
+    }
+
+}

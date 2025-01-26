@@ -1,0 +1,131 @@
+@page "/examination-management"
+@inject NavigationManager Navigation
+@using MudBlazor
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <!-- Header Section -->
+    <MudGrid Class="mb-3">
+        <MudItem xs="12" md="8">
+            <MudText Typo="Typo.h5">Examination Management</MudText>
+        </MudItem>
+        <MudItem xs="12" md="4" Class="d-flex justify-end align-center">
+            <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" OnClick="NavigateToAddExam">
+                Add New
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Tabs Navigation -->
+    <MudTabs>
+        <MudTabPanel Label="My Exams" />
+        <MudTabPanel Label="All Created Exams" />
+    </MudTabs>
+
+    <!-- Search -->
+    <MudGrid Class="my-3">
+        <MudItem xs="12" md="6">
+            <MudTextField T="string" Label="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+        </MudItem>
+    </MudGrid>
+
+    <!-- Table -->
+    <MudTable Items="exams" Striped="true" Bordered="true" Hover="true">
+        <HeaderContent>
+            <MudTh>
+                <MudCheckBox T="bool" @bind-Value="@selectAllChecked" OnChange="OnSelectAllChange" />
+                Select All
+            </MudTh>
+            <MudTh>Subject</MudTh>
+            <MudTh>Class</MudTh>
+            <MudTh>Term</MudTh>
+            <MudTh>Session</MudTh>
+            <MudTh>Exam Type</MudTh>
+            <MudTh>Exam Date</MudTh>
+            <MudTh>Duration</MudTh>
+            <MudTh>Published</MudTh>
+            <MudTh>Students</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>
+                <MudCheckBox T="bool" @bind-Value="@context.IsSelected" />
+            </MudTd>
+            <MudTd>@context.Subject</MudTd>
+            <MudTd>@context.Class</MudTd>
+            <MudTd>@context.Term</MudTd>
+            <MudTd>@context.Session</MudTd>
+            <MudTd>@context.ExamType</MudTd>
+            <MudTd>@context.ExamDate.ToString("ddd dd, MMM yyyy")</MudTd>
+            <MudTd>@context.Duration</MudTd>
+            <MudTd>
+                <MudIcon Icon="@((context.IsPublished) ? Icons.Material.Filled.Check : Icons.Material.Filled.Close)"
+                         Color="@((context.IsPublished) ? Color.Success : Color.Error)" />
+            </MudTd>
+            <MudTd>@context.StudentsCount</MudTd>
+        </RowTemplate>
+        <FooterContent>
+            <MudTd ColSpan="10" Align="Right">Total: <b>@exams.Count</b></MudTd>
+        </FooterContent>
+    </MudTable>
+</MudContainer>
+
+@code {
+    private List<ExamModel> exams = new()
+    {
+        new ExamModel
+        {
+            Id = 1,
+            Subject = "English",
+            Class = "Jss 1A",
+            Term = "1st",
+            Session = "2022/2023",
+            ExamType = "Objective",
+            ExamDate = new DateTime(2024, 5, 28),
+            Duration = "30 Mins",
+            IsPublished = true,
+            StudentsCount = 0
+        },
+        new ExamModel
+        {
+            Id = 2,
+            Subject = "English",
+            Class = "Jss 1A",
+            Term = "1st",
+            Session = "2022/2023",
+            ExamType = "Objective",
+            ExamDate = new DateTime(2024, 5, 28),
+            Duration = "30 Mins",
+            IsPublished = false,
+            StudentsCount = 0
+        }
+    };
+
+    private bool selectAllChecked;
+
+    private void OnSelectAllChange(bool isChecked)
+    {
+        foreach (var exam in exams)
+        {
+            exam.IsSelected = isChecked;
+        }
+    }
+
+    private void NavigateToAddExam()
+    {
+        Navigation.NavigateTo("/examination-management/add");
+    }
+
+    public class ExamModel
+    {
+        public int Id { get; set; }
+        public string Subject { get; set; }
+        public string Class { get; set; }
+        public string Term { get; set; }
+        public string Session { get; set; }
+        public string ExamType { get; set; }
+        public DateTime ExamDate { get; set; }
+        public string Duration { get; set; }
+        public bool IsPublished { get; set; }
+        public int StudentsCount { get; set; }
+        public bool IsSelected { get; set; }
+    }
+}

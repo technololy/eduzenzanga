@@ -1,7 +1,90 @@
-﻿@page "/old"
+﻿@page "/dashboard"
+@using MudBlazor
 
-<PageTitle>Home</PageTitle>
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <!-- Header Section -->
+    <MudText Typo="Typo.h5">Dashboard</MudText>
 
-<h1>Hello, world!</h1>
+    <!-- Statistics Section -->
+    <MudGrid Class="my-4">
+        <MudItem xs="12" md="4">
+            <MudPaper Class="pa-4 text-center">
+                <MudIcon Icon="@Icons.Material.Filled.People" Size="Size.Large" Color="Color.Success" />
+                <MudText Typo="Typo.h3">40</MudText>
+                <MudText Typo="Typo.subtitle1">Students</MudText>
+                <MudText Typo="Typo.caption" Color="Color.Primary">+8 from yesterday</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudPaper Class="pa-4 text-center">
+                <MudIcon Icon="@Icons.Material.Filled.School" Size="Size.Large" Color="Color.Success" />
+                <MudText Typo="Typo.h3">18</MudText>
+                <MudText Typo="Typo.subtitle1">Classes</MudText>
+                <MudText Typo="Typo.caption" Color="Color.Primary">8 Arms</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudPaper Class="pa-4 text-center">
+                <MudIcon Icon="@Icons.Material.Filled.PeopleOutline" Size="Size.Large" Color="Color.Success" />
+                <MudText Typo="Typo.h3">12</MudText>
+                <MudText Typo="Typo.subtitle1">Staff</MudText>
+                <MudText Typo="Typo.caption" Color="Color.Primary">+8 from yesterday</MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
 
-Welcome to your new app.
+    <!-- Class Statistics Section -->
+    <MudGrid>
+        <MudItem xs="12" md="8">
+            <MudPaper Class="pa-4">
+                <MudText Typo="Typo.h6">Class Statistics</MudText>
+                <MudChart T="ChartSeries" ChartType="ChartType.Bar" ChartSeries="@ClassSeries" XAxisLabels="@ClassXAxisLabels" Width="100%" Height="350px" />
+            </MudPaper>
+        </MudItem>
+
+        <!-- Quick Links Section -->
+        <MudItem xs="12" md="4">
+            <MudPaper Class="pa-4">
+                <MudText Typo="Typo.h6">Quick Links</MudText>
+                <MudList T="object">
+                    <MudListItem>
+                        <MudIcon Icon="@Icons.Material.Filled.People" Color="Color.Success" />
+                        <MudText>Staff Management</MudText>
+                        <MudText Typo="Typo.caption" Class="ml-auto text-muted">Manage the staff currently in the school</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudIcon Icon="@Icons.Material.Filled.Assignment" Color="Color.Success" />
+                        <MudText>View Results</MudText>
+                        <MudText Typo="Typo.caption" Class="ml-auto text-muted">Check the results of students in the school</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudIcon Icon="@Icons.Material.Filled.Person" Color="Color.Success" />
+                        <MudText>Student Management</MudText>
+                        <MudText Typo="Typo.caption" Class="ml-auto text-muted">Manage the students currently in the school</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudIcon Icon="@Icons.Material.Filled.Mail" Color="Color.Success" />
+                        <MudText>View Mails</MudText>
+                        <MudText Typo="Typo.caption" Class="ml-auto text-muted">View mails sent to the school</MudText>
+                    </MudListItem>
+                    <MudListItem>
+                        <MudIcon Icon="@Icons.Material.Filled.Laptop" Color="Color.Success" />
+                        <MudText>Online Exam</MudText>
+                        <MudText Typo="Typo.caption" Class="ml-auto text-muted">Set an online exam</MudText>
+                    </MudListItem>
+                </MudList>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    // Data for Class Statistics Chart
+    private List<ChartSeries> ClassSeries = new List<ChartSeries>
+    {
+        new ChartSeries { Name = "Female", Data = new double[] { 30, 40, 10, 25, 20, 35 } },
+        new ChartSeries { Name = "Male", Data = new double[] { 25, 30, 50, 35, 30, 40 } }
+    };
+
+    private string[] ClassXAxisLabels = { "Basic 1", "Basic 2", "Basic 3", "SS 1", "SS 2", "SS 3" };
+}

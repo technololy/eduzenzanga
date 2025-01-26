@@ -1,4 +1,5 @@
 using EduZanga.Web.Components;
+using MudBlazor;
 using MudBlazor.Services;
 
 namespace EduZanga;
@@ -10,7 +11,13 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddMudServices();
-
+        
+        // Change the default appearance of all MudButton components
+        MudGlobal.ButtonDefaults.Variant = Variant.Filled;
+        
+        
+        // Change the default appearance of all MudButton components
+        MudGlobal.InputDefaults.Variant = Variant.Outlined;
 
         // Add services to the container.
         builder.Services.AddRazorComponents()

@@ -1,0 +1,103 @@
+@page "/lesson-notes"
+@inject NavigationManager Navigation
+@using EduZanga.Model
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <!-- Header Section -->
+    <MudGrid Class="mb-3">
+        <MudItem xs="12" md="8">
+            <MudText Typo="Typo.h5">Lesson Notes</MudText>
+        </MudItem>
+        <MudItem xs="12" md="4" Class="d-flex justify-end align-center">
+            <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" OnClick="NavigateToAddNote">
+                Add New
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Tabs Navigation -->
+    <MudTabs>
+        <MudTabPanel Text="My Notes" />
+        <MudTabPanel Text="All Notes" />
+    </MudTabs>
+
+    <!-- Search -->
+    <MudGrid Class="my-3">
+        <MudItem xs="12" md="6">
+            <MudTextField T="string" Label="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+        </MudItem>
+    </MudGrid>
+
+    <!-- Table -->
+    <MudTable Items="notes" Striped="true" Bordered="true" Hover="true">
+        <HeaderContent>
+            <MudTh>Subject</MudTh>
+            <MudTh>Class</MudTh>
+            <MudTh>Week</MudTh>
+            <MudTh>Title</MudTh>
+            <MudTh>Term</MudTh>
+            <MudTh>Session</MudTh>
+            <MudTh>Published</MudTh>
+            <MudTh>Action</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.Subject</MudTd>
+            <MudTd>@context.Class</MudTd>
+            <MudTd>@context.Week</MudTd>
+            <MudTd>@context.Title</MudTd>
+            <MudTd>@context.Term</MudTd>
+            <MudTd>@context.Session</MudTd>
+            <MudTd>
+                <MudIcon Icon="@((context.IsPublished) ? Icons.Material.Filled.Check : Icons.Material.Filled.Close)"
+                         Color="@((context.IsPublished) ? Color.Success : Color.Error)" />
+            </MudTd>
+            <MudTd>
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" OnClick="() => EditNote(context.Id)" />
+                <MudIconButton Icon="@Icons.Material.Filled.FileDownload" Color="Color.Success" />
+            </MudTd>
+        </RowTemplate>
+        <FooterContent>
+            <MudTd ColSpan="8" Align="Right">Total: <b>@notes.Count</b></MudTd>
+        </FooterContent>
+    </MudTable>
+</MudContainer>
+
+@code {
+    private List<LessonNoteModel> notes = new()
+    {
+        new LessonNoteModel
+        {
+            Id = 1,
+            Subject = "English Studies",
+            Class = "SS 2 Topaz",
+            Week = "Week 4",
+            Title = "History of Nigeria",
+            Term = "1st",
+            Session = "2023/2024",
+            IsPublished = true
+        },
+        new LessonNoteModel
+        {
+            Id = 2,
+            Subject = "English Studies",
+            Class = "SS 2 Topaz",
+            Week = "Week 4",
+            Title = "History of Nigeria",
+            Term = "1st",
+            Session = "2023/2024",
+            IsPublished = true
+        }
+    };
+
+    private void EditNote(int id)
+    {
+        Navigation.NavigateTo($"/lesson-notes/edit/{id}");
+    }
+
+    private void NavigateToAddNote()
+    {
+        Navigation.NavigateTo("/lesson-notes/add");
+    }
+
+
+}

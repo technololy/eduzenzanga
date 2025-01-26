@@ -7,23 +7,23 @@
     <DataAnnotationsValidator />
     <MudGrid>
         <MudItem xs="12">
-            <MudTextField T="string" Label="Staff Name" Variant="Variant.Filled"
+            <MudTextField T="string" Label="Staff Name"  
                           @bind-Value="TeacherModel.StaffName" For="@(() => TeacherModel.StaffName)" />
         </MudItem>
         <MudItem xs="12">
-            <MudTextField T="string" Label="Staff ID" Variant="Variant.Filled"
+            <MudTextField T="string" Label="Staff ID"  
                           @bind-Value="TeacherModel.StaffId" For="@(() => TeacherModel.StaffId)" />
         </MudItem>
         <MudItem xs="12">
-            <MudTextField T="string" Label="Class" Variant="Variant.Filled"
+            <MudTextField T="string" Label="Class"  
                           @bind-Value="TeacherModel.Class" For="@(() => TeacherModel.Class)" />
         </MudItem>
         <MudItem xs="12">
-            <MudTextField T="string" Label="Arm" Variant="Variant.Filled"
+            <MudTextField T="string" Label="Arm"  
                           @bind-Value="TeacherModel.Arm" For="@(() => TeacherModel.Arm)" />
         </MudItem>
         <MudItem xs="12" Class="d-flex justify-end mt-3">
-            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Disabled="@_isSubmitting">
+            <MudButton ButtonType="ButtonType.Submit"   Color="Color.Primary" Disabled="@_isSubmitting">
                 @if (_isSubmitting)
                 {
                     <MudProgressCircular Indeterminate="true" Size="Size.Large" Class="me-2" />

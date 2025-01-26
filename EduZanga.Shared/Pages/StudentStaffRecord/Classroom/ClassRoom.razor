@@ -1,0 +1,97 @@
+@page "/my-classroom"
+@using EduZanga.Model
+@inject NavigationManager Navigation
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <!-- Header Section -->
+    <MudGrid Class="mb-3">
+        <MudItem xs="12" md="8">
+            <MudText Typo="Typo.h5">My Classroom</MudText>
+        </MudItem>
+
+    </MudGrid>
+
+    <!-- Navigation Tabs -->
+    <MudTabs>
+        <MudTabPanel Text="My Class" Class="text-green-600" />
+        <MudTabPanel Text="Active Classes" />
+        <MudTabPanel Text="Statistics" />
+    </MudTabs>
+
+    <!-- Action Buttons -->
+    <MudGrid Class="mt-3">
+        <MudItem xs="12" md="6">
+            <MudButton StartIcon="@Icons.Material.Filled.GroupAdd">Join a Class</MudButton>
+        </MudItem>
+        <MudItem xs="12" md="6" Class="d-flex justify-end">
+            <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" OnClick="NavigateToCreateClass">
+                Create New Class
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Table -->
+    <MudTable Items="classes" Striped="true" Bordered="true" Hover="true" Class="mt-4">
+        <HeaderContent>
+            <MudTh>Class</MudTh>
+            <MudTh>Subject</MudTh>
+            <MudTh>Class Code</MudTh>
+            <MudTh>Session</MudTh>
+            <MudTh>Date</MudTh>
+            <MudTh>Action</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.ClassName</MudTd>
+            <MudTd>@context.Subject</MudTd>
+            <MudTd>@context.ClassCode</MudTd>
+            <MudTd>@context.Session</MudTd>
+            <MudTd>@context.Date.ToString("ddd, dd MMM yyyy - h:mmtt")</MudTd>
+            <MudTd>
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="() => DeleteClass(context.Id)" />
+            </MudTd>
+        </RowTemplate>
+        <FooterContent>
+            <MudTd ColSpan="6" Align="Right">Total: <b>@classes.Count</b></MudTd>
+        </FooterContent>
+    </MudTable>
+</MudContainer>
+
+@code {
+    private List<ClassModel> classes = new()
+    {
+        new ClassModel
+        {
+            Id = 1,
+            ClassName = "SS 2 Pearlz",
+            Subject = "Physics",
+            ClassCode = "5FABA21E0DA04",
+            Session = "First Term (2022/2023)",
+            Date = DateTime.Now
+        },
+        new ClassModel
+        {
+            Id = 2,
+            ClassName = "SS 2 Pearlz",
+            Subject = "Physics",
+            ClassCode = "5FABA21E0DA04",
+            Session = "First Term (2022/2023)",
+            Date = DateTime.Now
+        }
+    };
+
+    private void DeleteClass(int id)
+    {
+        var classToRemove = classes.FirstOrDefault(c => c.Id == id);
+        if (classToRemove != null)
+        {
+            classes.Remove(classToRemove);
+        }
+    }
+
+    private void NavigateToCreateClass()
+    {
+        Navigation.NavigateTo("/my-classroom/create");
+    }
+
+
+}

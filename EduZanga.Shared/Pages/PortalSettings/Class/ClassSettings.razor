@@ -13,14 +13,14 @@
     <!-- Dropdown Settings -->
     <MudGrid Class="mb-3">
         <MudItem xs="6" md="4">
-            <MudSelect T="string" Label="Class Settings" Variant="Variant.Filled">
+            <MudSelect T="string" Label="Class Settings">
                 <MudSelectItem Value="@("Burger")">Burger</MudSelectItem>
                 <MudSelectItem Value="@("Hotdog")">Hot Dog</MudSelectItem>
             </MudSelect>
         </MudItem>
         <MudItem md="4" ></MudItem>
         <MudItem xs="6" md="4" Class="d-flex justify-end" >
-             <MudButton Size="Size.Large" Class="ms-3" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" OnClick="NavigateToAddClass">
+             <MudButton Size="Size.Large" Class="ms-3" Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" OnClick="NavigateToAddClass">
                 Add Class
             </MudButton>
         </MudItem>

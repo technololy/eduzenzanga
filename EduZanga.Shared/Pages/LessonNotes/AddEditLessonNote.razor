@@ -1,0 +1,91 @@
+@page "/lesson-notes/add"
+@page "/lesson-notes/edit/{NoteId:int}"
+@using EduZanga.Model
+@inject NavigationManager Navigation
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="mt-4">
+    <!-- Header Section -->
+    <MudGrid Class="mb-3">
+        <MudItem xs="12">
+            <MudText Typo="Typo.h5">@FormTitle</MudText>
+        </MudItem>
+        <MudItem xs="12">
+            <MudText Typo="Typo.subtitle2" Class="text-muted">Fill in the form to add or edit a lesson note.</MudText>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Form -->
+    <EditForm Model="@LessonNoteModel" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <MudGrid>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Subject" @bind-Value="LessonNoteModel.Subject" For="@(() => LessonNoteModel.Subject)" />
+            </MudItem>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Class" @bind-Value="LessonNoteModel.Class" For="@(() => LessonNoteModel.Class)" />
+            </MudItem>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Week" @bind-Value="LessonNoteModel.Week" For="@(() => LessonNoteModel.Week)" />
+            </MudItem>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Title" @bind-Value="LessonNoteModel.Title" For="@(() => LessonNoteModel.Title)" />
+            </MudItem>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Term" @bind-Value="LessonNoteModel.Term" For="@(() => LessonNoteModel.Term)" />
+            </MudItem>
+            <MudItem xs="12">
+                <MudTextField T="string" Label="Session" @bind-Value="LessonNoteModel.Session" For="@(() => LessonNoteModel.Session)" />
+            </MudItem>
+            <MudItem xs="12" Class="d-flex justify-end mt-3">
+                <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary">Save</MudButton>
+                <MudButton Color="Color.Secondary" Class="ms-3" OnClick="Cancel">Cancel</MudButton>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+
+    <!-- Validation Summary -->
+    <MudPaper Class="pa-3 mt-3">
+        <MudText Typo="Typo.subtitle2" Color="Color.Error">
+            <ValidationSummary />
+        </MudText>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    [Parameter] public int? NoteId { get; set; }
+
+    private CreateLessonNoteModel LessonNoteModel = new();
+
+    private string FormTitle => NoteId == null ? "Add Lesson Note" : "Edit Lesson Note";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (NoteId.HasValue)
+        {
+            // Simulated API call
+            await Task.Delay(500);
+            LessonNoteModel = new CreateLessonNoteModel
+            {
+                Subject = "English Studies",
+                Class = "SS 2 Topaz",
+                Week = "Week 4",
+                Title = "History of Nigeria",
+                Term = "1st",
+                Session = "2023/2024"
+            };
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        // Simulate API submission
+        await Task.Delay(500);
+        Navigation.NavigateTo("/lesson-notes");
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/lesson-notes");
+    }
+
+}

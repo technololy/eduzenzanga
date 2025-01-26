@@ -9,22 +9,22 @@
         <DataAnnotationsValidator />
         <MudGrid>
             <MudItem xs="12">
-                <MudTextField T="string" Label="Full Name" Variant="Variant.Filled" @bind-Value="StudentModel.FullName" For="@(() => StudentModel.FullName)" />
+                <MudTextField T="string" Label="Full Name"   @bind-Value="StudentModel.FullName" For="@(() => StudentModel.FullName)" />
             </MudItem>
             <MudItem xs="12">
-                <MudTextField T="string" Label="Student ID" Variant="Variant.Filled" @bind-Value="StudentModel.StudentId" For="@(() => StudentModel.StudentId)" />
+                <MudTextField T="string" Label="Student ID"   @bind-Value="StudentModel.StudentId" For="@(() => StudentModel.StudentId)" />
             </MudItem>
             <MudItem xs="12">
-                <MudSelect T="string" Label="Gender" Variant="Variant.Filled" @bind-Value="StudentModel.Gender">
+                <MudSelect T="string" Label="Gender"   @bind-Value="StudentModel.Gender">
                     <MudSelectItem Value="@("M")">Male</MudSelectItem>
                     <MudSelectItem Value="@("F")">Female</MudSelectItem>
                 </MudSelect>
             </MudItem>
             <MudItem xs="12">
-                <MudTextField T="string" Label="Class" Variant="Variant.Filled" @bind-Value="StudentModel.Class" For="@(() => StudentModel.Class)" />
+                <MudTextField T="string" Label="Class"   @bind-Value="StudentModel.Class" For="@(() => StudentModel.Class)" />
             </MudItem>
             <MudItem xs="12" Class="d-flex justify-end mt-3">
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Save</MudButton>
+                <MudButton ButtonType="ButtonType.Submit"   Color="Color.Primary">Save</MudButton>
                 <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="Cancel">Cancel</MudButton>
             </MudItem>
         </MudGrid>

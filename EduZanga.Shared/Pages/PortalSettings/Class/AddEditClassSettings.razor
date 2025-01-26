@@ -8,7 +8,7 @@
     <MudText Typo="Typo.h5">@FormTitle</MudText>
     <EditForm Model="@_currentClass" OnValidSubmit="SaveClass">
         <MudTextField T="string" Label="Class Name" @bind-Value="_currentClass.ClassName" Required="true" />
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SaveClass">Save</MudButton>
+        <MudButton   Color="Color.Primary" OnClick="SaveClass">Save</MudButton>
         <MudButton Variant="Variant.Text" OnClick="Cancel">Cancel</MudButton>
     </EditForm>
 </MudContainer>
